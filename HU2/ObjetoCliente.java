@@ -7,6 +7,10 @@ public class ObjetoCliente {
     private String Telefono;
     private String Direccion;
     private String Licencia;
+
+    public ObjetoCliente() {
+    }
+
     public ObjetoCliente(String cedula, String nombreCliente, String apellidoCliente, String telefono, String direccion,
             String licencia) {
         Cedula = cedula;
@@ -52,5 +56,7 @@ public class ObjetoCliente {
     public void setLicencia(String licencia) {
         Licencia = licencia;
     }
+
+    
 
 }
