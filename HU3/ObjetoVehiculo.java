@@ -1,5 +1,3 @@
-package HU3;
-
 public class ObjetoVehiculo {
 
     // Atributos generales
@@ -37,7 +35,6 @@ public class ObjetoVehiculo {
         CapacidadMaletero = capacidadMaletero;
     }
 
-    // Getters y Setters
     public String getTipoVehiculo() {
         return TipoVehiculo;
     }
