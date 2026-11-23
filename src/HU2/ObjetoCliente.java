@@ -1,4 +1,4 @@
-package src.HU2;
+package HU2;
 
 public class ObjetoCliente {
     private String Cedula;
