@@ -1,3 +1,5 @@
+package HU3;
+
 public class ObjetoVehiculo {
 
     // Atributos generales
