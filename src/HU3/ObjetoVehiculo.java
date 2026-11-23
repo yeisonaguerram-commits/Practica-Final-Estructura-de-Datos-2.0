@@ -1,4 +1,4 @@
-package src.HU3;
+package HU3;
 
 public class ObjetoVehiculo {
 
