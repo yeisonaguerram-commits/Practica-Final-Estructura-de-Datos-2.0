@@ -93,4 +93,26 @@ public class Validaciones {
             return false;
         return verificarLetrasYNumeros(texto, indice + 1);
     }
+
+    public String ValidarSoloNumeros(Scanner sc) {
+        String entrada = sc.nextLine().trim();
+        if (entrada.isEmpty()) {
+            System.out.println("El campo no puede estar vacío. Ingrese solo números:");
+            return ValidarSoloNumeros(sc);
+        }
+        if (!verificarSoloDigitos(entrada, 0)) {
+            System.out.println("Error: Solo se permiten números (sin espacios ni símbolos). Intente de nuevo:");
+            return ValidarSoloNumeros(sc);
+        }
+        return entrada;
+    }
+
+    private boolean verificarSoloDigitos(String texto, int indice) {
+        if (indice == texto.length())
+            return true;
+        if (!Character.isDigit(texto.charAt(indice)))
+            return false;
+        return verificarSoloDigitos(texto, indice + 1);
+    }
 }
+
