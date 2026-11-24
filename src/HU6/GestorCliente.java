@@ -9,7 +9,11 @@ import HU8.Validaciones;
 public class GestorCliente {
     public LinkedList<ObjetoCliente> IngresarCliente(LinkedList<ObjetoCliente> ListaCliente, Scanner sc,
             Validaciones V) {
+                System.out.println("---------------------");
+                System.out.println("Registrando nuevo cliente");
+                System.out.println("---------------------");
 
+                
     }
 
     public LinkedList<ObjetoCliente> ModificarCliente(LinkedList<ObjetoCliente> ListaCliente, Scanner sc,
