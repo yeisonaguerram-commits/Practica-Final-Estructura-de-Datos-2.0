@@ -11,6 +11,7 @@ import HU4.ObjetoContrato;
 import HU6.GestorCliente;
 import HU6.GestorVehiculo;
 import HU6.GestorContrato;
+import HU7.ImprimirInforme;
 
 public class Menu {
     Scanner sc = new Scanner(System.in);
@@ -21,6 +22,7 @@ public class Menu {
     GestorCliente GC = new GestorCliente();
     GestorVehiculo GV = new GestorVehiculo();
     GestorContrato GCo = new GestorContrato();
+    ImprimirInforme Informe = new ImprimirInforme();
 
     public int MenuPrincipal() {
         int Opcion = 0;
@@ -52,7 +54,7 @@ public class Menu {
                     System.out.println(GestorContrato());
                     break;
                 case 4:
-                    System.out.println("[Aquí se llamará al Informe General de HU7]");
+                    System.out.println(Informe.ImprimirInformes(ListaCliente, ListaVehiculo, ListaContrato, sc, V));
                     break;
                 case 5:
                     System.out.println("saliendo del sistema... ¡Hasta pronto!");
@@ -129,10 +131,10 @@ public class Menu {
                     ListaVehiculo = GV.IngresarVehiculo(ListaVehiculo, sc, V);
                     break;
                 case 2:
-                    ListaVehiculo = GV.ModificarVehiculo(ListaVehiculo, sc, V);
+                    ListaVehiculo = GV.ModificarVehiculo(ListaVehiculo, ListaContrato, sc, V);
                     break;
                 case 3:
-                    ListaVehiculo = GV.EliminarVehiculo(ListaVehiculo, sc, V, ListaCliente, ListaContrato);
+                    ListaVehiculo = GV.EliminarVehiculo(ListaVehiculo, sc, V);
                     break;
                 case 4:
                     System.out.println(GV.BuscarVehiculo(ListaVehiculo, sc, V));
@@ -166,16 +168,16 @@ public class Menu {
 
             switch (opt) {
                 case 1:
-                    GCo.RegistrarContrato(ListaContrato, ListaCliente, ListaVehiculo, sc, V);
+                    ListaContrato = GCo.RegistrarContrato(ListaContrato, ListaCliente, ListaVehiculo, sc, V);
                     break;
                 case 2:
-                    GCo.ModificarContrato(ListaContrato, ListaCliente, ListaVehiculo, sc, V);
+                    ListaContrato = GCo.ModificarContrato(ListaContrato, ListaCliente, ListaVehiculo, sc, V);
                     break;
                 case 3:
-                    GCo.FinalizarContrato(ListaContrato, ListaCliente, ListaVehiculo, sc, V);
+                    ListaContrato = GCo.FinalizarContrato(ListaContrato, ListaCliente, ListaVehiculo, sc, V);
                     break;
                 case 4:
-                    GCo.BuscarContrato(ListaContrato, ListaCliente, ListaVehiculo, sc, V);
+                    System.out.println(GCo.BuscarContrato(ListaContrato, ListaCliente, ListaVehiculo, sc, V));
                     break;
                 case 5:
                     continuar = false;
