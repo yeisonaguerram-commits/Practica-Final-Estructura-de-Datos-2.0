@@ -74,7 +74,6 @@ public class GestorContrato {
     }
 
     public ObjetoCliente ValidarCliente(LinkedList<ObjetoCliente> ListaCliente,
-
             Queue<ObjetoContrato> ListaContrato, String Cedula) {
 
         ObjetoCliente clienteEncontrado = null;
@@ -102,19 +101,19 @@ public class GestorContrato {
 
         while (!ListaContrato.isEmpty()) {
             ObjetoContrato aux = ListaContrato.poll();
-            if (aux.getCedulaCliente().equalsIgnoreCase(Cedula) && aux.getEstado().equalsIgnoreCase("Activo")){
+            if (aux.getCedulaCliente().equalsIgnoreCase(Cedula) && aux.getEstado().equalsIgnoreCase("Activo")) {
                 tieneContratoActivo = true;
             }
             colaAux.add(aux);
-        }
 
-        while (!colaAux.isEmpty()) {
-            ListaContrato.add(colaAux.poll());
-        }
+            while (!colaAux.isEmpty()) {
+                ListaContrato.add(colaAux.poll());
+            }
 
-        if (tieneContratoActivo) {
-            System.out.println("Este cliente ya tiene un vehiculo alquilado actualmente");
-            return null;
+            if (tieneContratoActivo) {
+                System.out.println("Este cliente ya tiene un vehiculo alquilado actualmente");
+                return null;
+            }
         }
 
         return clienteEncontrado;
@@ -141,4 +140,107 @@ public class GestorContrato {
         return null;
     }
 
+    public Queue<ObjetoContrato> ModificarContrato(Queue<ObjetoContrato> ListaContrato,
+            LinkedList<ObjetoCliente> ListaCliente, LinkedList<ObjetoVehiculo> ListaVehiculo, Scanner sc,
+            Validaciones V) {
+        if (ListaCliente.isEmpty()) {
+            System.out.println("Sin clientes ingresados a sistema");
+            return ListaContrato;
+        } else if (ListaVehiculo.isEmpty()) {
+            System.out.println("Sin Vehiculos ingresados a sistema");
+            return ListaContrato;
+        }
+
+        System.out.println("---------------------");
+        System.out.println("MODIFICACION DE CONTRATO");
+        System.out.println("---------------------");
+
+        if (ListaContrato.isEmpty()) {
+            System.out.println("No hay contratos registrados en el sistema");
+            return ListaContrato;
+        }
+
+        System.out.println("Ingrese el ID del contrato a modificar:");
+        String idBuscar = V.ValidarAlfaNumerico(sc);
+
+        Queue<ObjetoContrato> colaAux = new LinkedList<>();
+        boolean encontrado = false;
+
+        while (!ListaContrato.isEmpty()) {
+            ObjetoContrato aux = ListaContrato.poll();
+
+            if (aux.getIDcontrato().equalsIgnoreCase(idBuscar)) {
+                encontrado = true;
+                if (!aux.getEstado().equalsIgnoreCase("Activo")) {
+                    System.out.println("Solo se pueden modificar contratos en estado Activo.");
+                } else {
+                    MenuModificarContrato(aux, ListaVehiculo, sc, V);
+                }
+            }
+            colaAux.add(aux);
+        }
+
+        while (!colaAux.isEmpty()) {
+            ListaContrato.add(colaAux.poll());
+        }
+
+        if (!encontrado) {
+            System.out.println("No se encontro ningun contrato con ese ID");
+        }
+
+        return ListaContrato;
+    }
+
+    public ObjetoContrato MenuModificarContrato(ObjetoContrato aux, LinkedList<ObjetoVehiculo> ListaVehiculo,
+            Scanner sc, Validaciones V) {
+        boolean continuar = true;
+        do {
+            System.out.println("Que desea modificar del contrato " + aux.getIDcontrato() + "?");
+            System.out.println("1) Fecha de Inicio");
+            System.out.println("2) Fecha de Fin");
+            System.out.println("3) Total de Dias (recalcula valor total)");
+            System.out.println("4) Salir");
+            int opt = V.ValidarEntero(sc);
+
+            switch (opt) {
+                case 1:
+                    System.out.println("Ingrese nueva Fecha de Inicio:");
+                    aux.setFechaInicio(V.ValidarTextoLibre(sc));
+                    System.out.println("Fecha de inicio actualizada.");
+                    break;
+                case 2:
+                    System.out.println("Ingrese nueva Fecha de Fin:");
+                    aux.setFechaFin(V.ValidarTextoLibre(sc));
+                    System.out.println("Fecha de fin actualizada.");
+                    break;
+                case 3:
+                    int nuevosDias = 0;
+                    while (nuevosDias <= 0) {
+                        System.out.println("Ingrese el nuevo total de dias (mayor a 0):");
+                        nuevosDias = V.ValidarEntero(sc);
+                    }
+                    aux.setTotalDias(nuevosDias);
+                    for (ObjetoVehiculo v : ListaVehiculo) {
+                        if (v.getPlaca().equalsIgnoreCase(aux.getPlacaVehiculo())) {
+                            aux.setValorTotal(nuevosDias * v.getPrecioDiario());
+                            break;
+                        }
+                    }
+                    System.out.println("Duracion y valor total actualizados: $" + aux.getValorTotal());
+                    break;
+                case 4:
+                    continuar = false;
+                    break;
+                default:
+                    System.out.println("Opcion no valida");
+                    break;
+            }
+        } while (continuar);
+
+        return aux;
+    }
+
+    public ObjetoContrato FinalizarContrato(ObjetoContrato aux, LinkedList<ObjetoVehiculo> ListaVehiculo,
+            Scanner sc, Validaciones V) {
+            }
 }
