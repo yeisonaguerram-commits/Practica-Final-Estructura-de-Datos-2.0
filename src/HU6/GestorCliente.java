@@ -139,11 +139,41 @@ public class GestorCliente {
                                 return ListaCliente;
                         }
                 }
+
+                ListaContrato = EliminarContrato(sc, V, ListaContrato, ListaCliente, ListaVehiculo, Cedula);
                 ListaCliente.remove(aux);
 
-
-
                 return ListaCliente;
+        }
+
+        public Queue<ObjetoContrato> EliminarContrato(Scanner sc, Validaciones V, Queue<ObjetoContrato> ListaContrato,
+                        LinkedList<ObjetoCliente> ListaCliente, LinkedList<ObjetoVehiculo> ListaVehiculo,
+                        String Cedula) {
+                Queue<ObjetoContrato> colaAux = new LinkedList<>();
+
+                while (!ListaContrato.isEmpty()) {
+                        ObjetoContrato aux = ListaContrato.poll();
+                        if (aux.getCedulaCliente().equalsIgnoreCase(Cedula)) {
+                                System.out.println("Contrato con Id: " + aux.getIDcontrato() + " Eliminado");
+
+                                if (aux.getEstado().equalsIgnoreCase("Activo")) {
+                                        for (ObjetoVehiculo v : ListaVehiculo) {
+                                                if (v.getPlaca().equalsIgnoreCase(aux.getPlacaVehiculo())) {
+                                                        v.setEstado("Disponible");
+                                                        break;
+                                                }
+                                        }
+                                }
+
+                        } else {
+                                colaAux.add(aux);
+                        }
+                }
+
+                while (!colaAux.isEmpty()) {
+                        ListaContrato.add(colaAux.poll());
+                }
+        return ListaContrato;
         }
 
         public String BuscarCliente(LinkedList<ObjetoCliente> ListaCliente, Scanner sc,
