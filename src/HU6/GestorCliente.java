@@ -118,6 +118,12 @@ public class GestorCliente {
                 System.out.println("---------------------");
                 System.out.println("Eliminacion de cliente");
                 System.out.println("---------------------");
+
+                if (ListaCliente.isEmpty()) {
+                        System.out.println("No hay clientes registrados en el sistema.");
+                        return ListaCliente;
+                }
+
                 System.out.println("Ingrese cedula del ciente a eliminar");
                 String Cedula = V.ValidarAlfaNumerico(sc);
 
@@ -142,6 +148,12 @@ public class GestorCliente {
                 System.out.println("---------------------");
                 System.out.println("Buscar cliente");
                 System.out.println("---------------------");
+
+                if (ListaCliente.isEmpty()) {
+                        return "No hay clientes registrados en el sistema.";
+
+                }
+
                 System.out.println("Ingrese cedula del ciente a buscar");
                 String Cedula = V.ValidarAlfaNumerico(sc);
 
