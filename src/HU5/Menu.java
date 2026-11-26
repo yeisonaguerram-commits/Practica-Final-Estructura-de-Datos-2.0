@@ -86,16 +86,16 @@ public class Menu {
 
             switch (opt) {
                 case 1:
-                    GC.IngresarCliente(ListaCliente, sc, V);
+                    ListaCliente = GC.IngresarCliente(ListaCliente, sc, V);
                     break;
                 case 2:
-                    GC.ModificarCliente(ListaCliente, sc, V);
+                    ListaCliente = GC.ModificarCliente(ListaCliente, sc, V);
                     break;
                 case 3:
-                    GC.EliminarCliente(ListaCliente, sc, V);
+                    ListaCliente = GC.EliminarCliente(ListaCliente, sc, V, ListaVehiculo, ListaContrato);
                     break;
                 case 4:
-                    GC.BuscarCliente(ListaCliente, sc, V);
+                    System.out.println(GC.BuscarCliente(ListaCliente, sc, V));
                     break;
                 case 5:
                     continuar = false;
@@ -126,16 +126,16 @@ public class Menu {
 
             switch (opt) {
                 case 1:
-                    GV.IngresarVehiculo(ListaVehiculo, sc, V);
+                    ListaVehiculo = GV.IngresarVehiculo(ListaVehiculo, sc, V);
                     break;
                 case 2:
-                    GV.ModificarVehiculo(ListaVehiculo, sc, V);
+                    ListaVehiculo = GV.ModificarVehiculo(ListaVehiculo, sc, V);
                     break;
                 case 3:
-                    GV.EliminarVehiculo(ListaVehiculo, sc, V);
+                    ListaVehiculo = GV.EliminarVehiculo(ListaVehiculo, sc, V, ListaCliente, ListaContrato);
                     break;
                 case 4:
-                    GV.BuscarVehiculo(ListaVehiculo, sc, V);
+                    System.out.println(GV.BuscarVehiculo(ListaVehiculo, sc, V));
                     break;
                 case 5:
                     continuar = false;
