@@ -17,10 +17,10 @@ public class GestorContrato {
             Validaciones V) {
         ObjetoContrato NuevoContrato = new ObjetoContrato();
 
-        if (ListaCliente == null) {
+        if (ListaCliente.isEmpty()) {
             System.out.println("Sin clientes ingresados a sistema");
             return ListaContrato;
-        } else if (ListaVehiculo == null) {
+        } else if (ListaVehiculo.isEmpty()) {
             System.out.println("Sin Vehiculos ingresados a sistema");
             return ListaContrato;
         }
@@ -240,14 +240,14 @@ public class GestorContrato {
         return aux;
     }
 
-    public ObjetoContrato FinalizarContrato(ObjetoContrato aux, LinkedList<ObjetoVehiculo> ListaVehiculo,
-            Scanner sc, Validaciones V) {
-        ObjetoContrato NuevoContrato = new ObjetoContrato();
+    public Queue<ObjetoContrato> FinalizarContrato(Queue<ObjetoContrato> ListaContrato,
+            LinkedList<ObjetoCliente> ListaCliente, LinkedList<ObjetoVehiculo> ListaVehiculo, Scanner sc,
+            Validaciones V) {
 
-        if (ListaCliente == null) {
+        if (ListaCliente.isEmpty()) {
             System.out.println("Sin clientes ingresados a sistema");
             return ListaContrato;
-        } else if (ListaVehiculo == null) {
+        } else if (ListaVehiculo.isEmpty()) {
             System.out.println("Sin Vehiculos ingresados a sistema");
             return ListaContrato;
         }
@@ -255,5 +255,101 @@ public class GestorContrato {
         System.out.println("---------------------");
         System.out.println("FINALIZACION DE CONTRATO");
         System.out.println("------------------------");
+
+        if (ListaContrato.isEmpty()) {
+            System.out.println("No hay contratos registrados en el sistema");
+            return ListaContrato;
+        }
+
+        System.out.println("Ingrese el ID del contrato a finalizar:");
+        String idBuscar = V.ValidarAlfaNumerico(sc);
+
+        Queue<ObjetoContrato> colaAux = new LinkedList<>();
+        boolean encontrado = false;
+
+        while (!ListaContrato.isEmpty()) {
+            ObjetoContrato aux = ListaContrato.poll();
+
+            if (aux.getIDcontrato().equalsIgnoreCase(idBuscar)) {
+                encontrado = true;
+                if (!aux.getEstado().equalsIgnoreCase("Activo")) {
+                    System.out.println("Contrato ya se encuentra finalizado");
+                } else {
+                    aux.setEstado("Finalizado");
+                    for (ObjetoVehiculo v : ListaVehiculo) {
+                        if (v.getPlaca().equalsIgnoreCase(aux.getPlacaVehiculo())) {
+                            v.setEstado("Disponible");
+                            break;
+                        }
+                    }
+                    System.out.println(
+                            "Contrato finalizado y vehiculo " + aux.getPlacaVehiculo() + " ahora esta Disponible.");
+                }
             }
+            colaAux.add(aux);
+        }
+
+        while (!colaAux.isEmpty()) {
+            ListaContrato.add(colaAux.poll());
+        }
+
+        if (!encontrado) {
+            System.out.println("No se encontro ningun contrato con ese ID");
+        }
+
+        return ListaContrato;
+    }
+
+    public String BuscarContrato(Queue<ObjetoContrato> ListaContrato,
+            LinkedList<ObjetoCliente> ListaCliente, LinkedList<ObjetoVehiculo> ListaVehiculo, Scanner sc,
+            Validaciones V) {
+        if (ListaCliente.isEmpty()) {
+            return "Sin clientes ingresados a sistema";
+        } else if (ListaVehiculo.isEmpty()) {
+            return "Sin Vehiculos ingresados a sistema";
+        }
+
+        System.out.println("---------------------");
+        System.out.println("BUSQUEDA DE CONTRATO");
+        System.out.println("---------------------");
+
+        if (ListaContrato.isEmpty()) {
+            return "No hay contratos registrados en el sistema";
+        }
+
+        System.out.println("Ingrese el ID del contrato a buscar:");
+        String idBuscar = V.ValidarAlfaNumerico(sc);
+
+        Queue<ObjetoContrato> colaAux = new LinkedList<>();
+        boolean encontrado = false;
+
+        while (!ListaContrato.isEmpty()) {
+            ObjetoContrato aux = ListaContrato.poll();
+
+            if (aux.getIDcontrato().equalsIgnoreCase(idBuscar)) {
+                encontrado = true;
+                System.out.println("----------------------------------------");
+                System.out.println("ID Contrato: " + aux.getIDcontrato());
+                System.out.println("Cedula Cliente: " + aux.getCedulaCliente());
+                System.out.println("Placa Vehiculo: " + aux.getPlacaVehiculo());
+                System.out.println("Fecha Inicio: " + aux.getFechaInicio());
+                System.out.println("Fecha Fin: " + aux.getFechaFin());
+                System.out.println("Total Dias: " + aux.getTotalDias());
+                System.out.println("Valor Total: $" + aux.getValorTotal());
+                System.out.println("Estado: " + aux.getEstado());
+                System.out.println("----------------------------------------");
+            }
+            colaAux.add(aux);
+        }
+
+        while (!colaAux.isEmpty()) {
+            ListaContrato.add(colaAux.poll());
+        }
+
+        if (!encontrado) {
+            return "No se encontro ningun contrato con ese ID";
+        }
+
+        return "Busqueda finalizada";
+    }
 }
