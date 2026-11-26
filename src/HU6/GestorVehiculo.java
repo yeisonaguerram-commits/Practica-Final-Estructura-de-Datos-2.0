@@ -1,9 +1,11 @@
 package HU6;
 
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 import HU3.ObjetoVehiculo;
+import HU4.ObjetoContrato;
 import HU8.Validaciones;
 
 public class GestorVehiculo {
@@ -167,8 +169,8 @@ public class GestorVehiculo {
                 return "Correcto";
         }
 
-        public LinkedList<ObjetoVehiculo> ModificarVehiculo(LinkedList<ObjetoVehiculo> ListaVehiculo, Scanner sc,
-                        Validaciones V) {
+        public LinkedList<ObjetoVehiculo> ModificarVehiculo(LinkedList<ObjetoVehiculo> ListaVehiculo,
+                        Queue<ObjetoContrato> ListaContrato, Scanner sc, Validaciones V) {
                 boolean continuar = true;
                 ObjetoVehiculo aux = null;
 
@@ -182,21 +184,22 @@ public class GestorVehiculo {
                         if (aux2.getPlaca().equalsIgnoreCase(placa)) {
                                 aux = aux2;
                                 break;
-                        } else {
-                                System.out.println("No existe cliente con esa cedula");
-                                return ListaVehiculo;
                         }
+                }
+
+                if (aux == null) {
+                        System.out.println("No existe vehiculo con esa placa");
+                        return ListaVehiculo;
                 }
 
                 do {
                         System.out.println("Que desea cambiar??");
-
                         System.out.println("1) Marca");
                         System.out.println("2) Modelo");
                         System.out.println("3) PrecioDiario");
-                        if (aux.getTipoVehiculo().equalsIgnoreCase("Sedab")) {
+                        if (aux.getTipoVehiculo().equalsIgnoreCase("Sedan")) {
                                 System.out.println("4) Tipo de combustible");
-                                System.out.println("5) Trasnmision");
+                                System.out.println("5) Transmision");
                         } else {
                                 System.out.println("4) Traccion");
                                 System.out.println("5) Capacidad del maletero");
@@ -214,8 +217,22 @@ public class GestorVehiculo {
                                         aux.setModelo(V.ValidarEntero(sc));
                                         break;
                                 case 3:
-                                        System.out.println("Ingrese Telefono de contacto");
-                                        aux.setPrecioDiario(V.ValidarDecimal(sc).floatValue());
+                                        System.out.println("Ingrese nuevo precio diario");
+                                        float nuevoPrecio = V.ValidarDecimal(sc).floatValue();
+                                        aux.setPrecioDiario(nuevoPrecio);
+
+                                        Queue<ObjetoContrato> colaAux = new LinkedList<>();
+                                        while (!ListaContrato.isEmpty()) {
+                                                ObjetoContrato contrato = ListaContrato.poll();
+                                                if (contrato.getPlacaVehiculo().equalsIgnoreCase(aux.getPlaca())
+                                                                && contrato.getEstado().equalsIgnoreCase("Activo")) {
+                                                        contrato.setValorTotal(contrato.getTotalDias() * nuevoPrecio);
+                                                }
+                                                colaAux.add(contrato);
+                                        }
+                                        while (!colaAux.isEmpty()) {
+                                                ListaContrato.add(colaAux.poll());
+                                        }
                                         break;
                                 case 4:
                                         if (aux.getTipoVehiculo().equalsIgnoreCase("Sedan")) {

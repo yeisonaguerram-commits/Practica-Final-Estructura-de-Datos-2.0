@@ -242,5 +242,18 @@ public class GestorContrato {
 
     public ObjetoContrato FinalizarContrato(ObjetoContrato aux, LinkedList<ObjetoVehiculo> ListaVehiculo,
             Scanner sc, Validaciones V) {
+        ObjetoContrato NuevoContrato = new ObjetoContrato();
+
+        if (ListaCliente == null) {
+            System.out.println("Sin clientes ingresados a sistema");
+            return ListaContrato;
+        } else if (ListaVehiculo == null) {
+            System.out.println("Sin Vehiculos ingresados a sistema");
+            return ListaContrato;
+        }
+
+        System.out.println("---------------------");
+        System.out.println("FINALIZACION DE CONTRATO");
+        System.out.println("------------------------");
             }
 }

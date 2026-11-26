@@ -1,9 +1,12 @@
 package HU6;
 
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 import HU2.ObjetoCliente;
+import HU3.ObjetoVehiculo;
+import HU4.ObjetoContrato;
 import HU8.Validaciones;
 
 public class GestorCliente {
@@ -112,7 +115,7 @@ public class GestorCliente {
         }
 
         public LinkedList<ObjetoCliente> EliminarCliente(LinkedList<ObjetoCliente> ListaCliente, Scanner sc,
-                        Validaciones V) {
+                        Validaciones V, LinkedList<ObjetoVehiculo> ListaVehiculo, Queue<ObjetoContrato> ListaContrato) {
                 ObjetoCliente aux = null;
 
                 System.out.println("---------------------");
@@ -137,6 +140,8 @@ public class GestorCliente {
                         }
                 }
                 ListaCliente.remove(aux);
+
+
 
                 return ListaCliente;
         }
