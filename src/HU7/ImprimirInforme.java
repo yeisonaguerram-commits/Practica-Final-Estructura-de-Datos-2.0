@@ -20,7 +20,7 @@ public class ImprimirInforme {
 
         Generarinforme(ListaCliente);
         Generarinforme(ListaVehiculo, true);
-        Generarinforme(ListaContrato);
+        Generarinforme(ListaContrato, ListaCliente);
 
         System.out.println("==========================================");
         return "Informe generado correctamente.";
@@ -48,9 +48,12 @@ public class ImprimirInforme {
         }
 
         for (ObjetoVehiculo v : ListaVehiculo) {
-            String detalle = v.getTipoVehiculo().equalsIgnoreCase("Sedan")
-                    ? "Combustible: " + v.getTipoCombustible() + " | Transmision: " + v.getTransmision()
-                    : "Traccion: " + v.getTraccion() + " | Maletero: " + v.getCapacidadMaletero() + "L";
+            String detalle = "";
+            if (v.getTipoVehiculo().equalsIgnoreCase("Sedan")) {
+                detalle = "Combustible: " + v.getTipoCombustible() + " | Transmision: " + v.getTransmision();
+            } else {
+                detalle = "Traccion: " + v.getTraccion() + " | Maletero: " + v.getCapacidadMaletero() + "L";
+            }
 
             System.out.println("Placa: " + v.getPlaca() + " | " + v.getTipoVehiculo() + " " + v.getMarca() + " ("
                     + v.getModelo() + ") | $" + v.getPrecioDiario() + "/dia | Estado: " + v.getEstado() + " | "
@@ -59,7 +62,7 @@ public class ImprimirInforme {
         return "Vehiculos listados";
     }
 
-    public String Generarinforme(Queue<ObjetoContrato> ListaContrato) {
+public String Generarinforme(Queue<ObjetoContrato> ListaContrato, LinkedList<ObjetoCliente> ListaCliente) {
         System.out.println("--- 3. CONTRATOS Y TOTAL DE INGRESOS ---");
         if (ListaContrato.isEmpty()) {
             System.out.println("No hay contratos registrados.");
@@ -76,9 +79,11 @@ public class ImprimirInforme {
             ObjetoContrato c = ListaContrato.poll();
             if (c.getEstado().equalsIgnoreCase("Activo")) {
                 hayActivos = true;
-                System.out.println("ID: " + c.getIDcontrato() + " | Cedula: " + c.getCedulaCliente() + " | Placa: "
-                        + c.getPlacaVehiculo() + " | Inicio: " + c.getFechaInicio() + " | Fin: " + c.getFechaFin()
-                        + " | Dias: " + c.getTotalDias() + " | Total: $" + c.getValorTotal());
+                String nombreCliente = ObtenerNombreCliente(ListaCliente, c.getCedulaCliente());
+                System.out.println("ID: " + c.getIDcontrato() + " | Cliente: " + nombreCliente + " (CC: "
+                        + c.getCedulaCliente() + ") | Placa: " + c.getPlacaVehiculo() + " | Inicio: "
+                        + c.getFechaInicio() + " | Fin: " + c.getFechaFin() + " | Dias: " + c.getTotalDias()
+                        + " | Total: $" + c.getValorTotal());
             }
             totalIngresos += c.getValorTotal();
             colaAux.add(c);
@@ -87,15 +92,17 @@ public class ImprimirInforme {
             System.out.println("   (Ninguno)");
         }
 
-        System.out.println("\n>> CONTRATOS FINALIZADOS:");
+        System.out.println(">> CONTRATOS FINALIZADOS:");
         boolean hayFinalizados = false;
         while (!colaAux.isEmpty()) {
             ObjetoContrato c = colaAux.poll();
             if (c.getEstado().equalsIgnoreCase("Finalizado")) {
                 hayFinalizados = true;
-                System.out.println("ID: " + c.getIDcontrato() + " | Cedula: " + c.getCedulaCliente() + " | Placa: "
-                        + c.getPlacaVehiculo() + " | Inicio: " + c.getFechaInicio() + " | Fin: " + c.getFechaFin()
-                        + " | Dias: " + c.getTotalDias() + " | Total: $" + c.getValorTotal());
+                String nombreCliente = ObtenerNombreCliente(ListaCliente, c.getCedulaCliente());
+                System.out.println("ID: " + c.getIDcontrato() + " | Cliente: " + nombreCliente + " (CC: "
+                        + c.getCedulaCliente() + ") | Placa: " + c.getPlacaVehiculo() + " | Inicio: "
+                        + c.getFechaInicio() + " | Fin: " + c.getFechaFin() + " | Dias: " + c.getTotalDias()
+                        + " | Total: $" + c.getValorTotal());
             }
             ListaContrato.add(c);
         }
@@ -108,5 +115,14 @@ public class ImprimirInforme {
         System.out.println("------------------------------------------");
 
         return "Contratos listados";
+    }
+
+    public String ObtenerNombreCliente(LinkedList<ObjetoCliente> ListaCliente, String Cedula) {
+        for (ObjetoCliente cli : ListaCliente) {
+            if (cli.getCedula().equalsIgnoreCase(Cedula)) {
+                return cli.getNombreCliente() + " " + cli.getApellidoCliente();
+            }
+        }
+        return "Desconocido";
     }
 }
