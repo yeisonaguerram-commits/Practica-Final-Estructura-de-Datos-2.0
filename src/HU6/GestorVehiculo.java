@@ -174,6 +174,11 @@ public class GestorVehiculo {
                 boolean continuar = true;
                 ObjetoVehiculo aux = null;
 
+                if (ListaVehiculo.isEmpty()) {
+                        System.out.println("No hay vehiculos registrados en el sistema.");
+                        return ListaVehiculo;
+                }
+
                 System.out.println("---------------------");
                 System.out.println("Modificacion de Vehiculo");
                 System.out.println("-------------------");
