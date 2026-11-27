@@ -54,6 +54,11 @@ public class GestorCliente {
                 boolean continuar = true;
                 ObjetoCliente aux = null;
 
+                if (ListaCliente.isEmpty()) {
+                        System.out.println("No hay clientes registrados en el sistema.");
+                        return ListaCliente;
+                }
+
                 System.out.println("---------------------");
                 System.out.println("Modificacion de cliente");
                 System.out.println("-------------------");
@@ -173,7 +178,7 @@ public class GestorCliente {
                 while (!colaAux.isEmpty()) {
                         ListaContrato.add(colaAux.poll());
                 }
-        return ListaContrato;
+                return ListaContrato;
         }
 
         public String BuscarCliente(LinkedList<ObjetoCliente> ListaCliente, Scanner sc,
